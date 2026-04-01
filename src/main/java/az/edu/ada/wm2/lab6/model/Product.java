@@ -5,6 +5,13 @@ import java.time.LocalDate;
 import java.util.UUID;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+
+import java.util.HashSet;
+import java.util.Set;
+import az.edu.ada.wm2.lab6.model.Category;
 
 @Entity
 public class Product {
@@ -76,6 +83,21 @@ public class Product {
                 '}';
     }
 
+    @ManyToMany
+@JoinTable(
+    name = "product_category",
+    joinColumns = @JoinColumn(name = "product_id"),
+    inverseJoinColumns = @JoinColumn(name = "category_id")
+)
+private Set<Category> categories = new HashSet<>();
 
+
+public Set<Category> getCategories() {
+    return categories;
+}
+
+public void setCategories(Set<Category> categories) {
+    this.categories = categories;
+}
 }
 
