@@ -12,7 +12,10 @@ import jakarta.persistence.ManyToMany;
 import java.util.HashSet;
 import java.util.Set;
 import az.edu.ada.wm2.lab6.model.Category;
+import java.util.ArrayList;
+import java.util.List;
 
+@SuppressWarnings("unused")
 @Entity
 public class Product {
 
@@ -89,15 +92,23 @@ public class Product {
     joinColumns = @JoinColumn(name = "product_id"),
     inverseJoinColumns = @JoinColumn(name = "category_id")
 )
-private Set<Category> categories = new HashSet<>();
+private Set<Category> categories1 = new HashSet<>();
 
 
 public Set<Category> getCategories() {
-    return categories;
+    return categories1;
 }
 
 public void setCategories(Set<Category> categories) {
-    this.categories = categories;
+    this.categories1 = categories;
 }
+
+@ManyToMany
+@JoinTable(
+    name = "product_category",
+    joinColumns = @JoinColumn(name = "product_id"),
+    inverseJoinColumns = @JoinColumn(name = "category_id")
+)
+private List<Category> categories = new ArrayList<>();
 }
 
