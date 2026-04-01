@@ -99,8 +99,8 @@ public Set<Category> getCategories() {
     return categories1;
 }
 
-public void setCategories(Set<Category> categories) {
-    this.categories1 = categories;
+public void setCategories(List<Category> categories2) {
+    this.categories1 = (Set<Category>) categories2;
 }
 
 @ManyToMany
@@ -109,6 +109,13 @@ public void setCategories(Set<Category> categories) {
     joinColumns = @JoinColumn(name = "product_id"),
     inverseJoinColumns = @JoinColumn(name = "category_id")
 )
+private List<Category> categories11 = new ArrayList<>();
+
+public void setCategories1(List<Category> categories2) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setCategories'");
+}
+
 private List<Category> categories = new ArrayList<>();
 }
 
