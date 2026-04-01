@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -39,7 +40,7 @@ public class Category {
     public void setId(UUID id) {
         this.id = id;
     }
-
+private List<Product> products = new ArrayList<>();
     public String getName() {
         return name;
     }
