@@ -1,31 +1,35 @@
 package az.edu.ada.wm2.lab6.model;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.UUID;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
-import java.util.HashSet;
-import java.util.Set;
-import az.edu.ada.wm2.lab6.model.Category;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-@SuppressWarnings("unused")
 @Entity
 public class Product {
 
     @Id
     private UUID id;
+
     private String productName;
     private BigDecimal price;
     private LocalDate expirationDate;
 
-    // Constructors
+    @ManyToMany
+    @JoinTable(
+        name = "product_category",
+        joinColumns = @JoinColumn(name = "product_id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> categories = new ArrayList<>();
+
     public Product() {
     }
 
@@ -43,7 +47,6 @@ public class Product {
         this.expirationDate = expirationDate;
     }
 
-    // Getters and Setters
     public UUID getId() {
         return id;
     }
@@ -76,6 +79,14 @@ public class Product {
         this.expirationDate = expirationDate;
     }
 
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -85,37 +96,4 @@ public class Product {
                 ", expirationDate=" + expirationDate +
                 '}';
     }
-
-    @ManyToMany
-@JoinTable(
-    name = "product_category",
-    joinColumns = @JoinColumn(name = "product_id"),
-    inverseJoinColumns = @JoinColumn(name = "category_id")
-)
-private Set<Category> categories1 = new HashSet<>();
-
-
-public Set<Category> getCategories() {
-    return categories1;
 }
-
-public void setCategories(List<Category> categories2) {
-    this.categories1 = (Set<Category>) categories2;
-}
-
-@ManyToMany
-@JoinTable(
-    name = "product_category",
-    joinColumns = @JoinColumn(name = "product_id"),
-    inverseJoinColumns = @JoinColumn(name = "category_id")
-)
-private List<Category> categories11 = new ArrayList<>();
-
-public void setCategories1(List<Category> categories2) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'setCategories'");
-}
-
-private List<Category> categories = new ArrayList<>();
-}
-

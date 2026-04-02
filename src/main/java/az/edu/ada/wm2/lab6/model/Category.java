@@ -5,8 +5,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -18,7 +17,7 @@ public class Category {
     private String name;
 
     @ManyToMany(mappedBy = "categories")
-    private Set<Product> products = new HashSet<>();
+    private List<Product> products = new ArrayList<>();
 
     public Category() {
     }
@@ -40,7 +39,7 @@ public class Category {
     public void setId(UUID id) {
         this.id = id;
     }
-private List<Product> products = new ArrayList<>();
+
     public String getName() {
         return name;
     }
@@ -49,11 +48,11 @@ private List<Product> products = new ArrayList<>();
         this.name = name;
     }
 
-    public Set<Product> getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(Set<Product> products) {
+    public void setProducts(List<Product> products) {
         this.products = products;
     }
 }
