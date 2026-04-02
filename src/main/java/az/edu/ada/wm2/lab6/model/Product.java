@@ -1,4 +1,6 @@
 package az.edu.ada.wm2.lab6.model;
+import lombok.*;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -11,7 +13,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 @Entity
 public class Product {
 

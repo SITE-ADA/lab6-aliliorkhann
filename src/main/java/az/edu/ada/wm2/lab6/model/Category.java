@@ -1,5 +1,6 @@
 package az.edu.ada.wm2.lab6.model;
 
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -7,7 +8,11 @@ import jakarta.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 @Entity
 public class Category {
 
