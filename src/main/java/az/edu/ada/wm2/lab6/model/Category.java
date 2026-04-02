@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -30,4 +31,9 @@ public class Category {
     @Builder.Default
     @ManyToMany(mappedBy = "categories")
     private Set<Product> products = new HashSet<>();
+
+    public void setProducts(List<Product> of) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setProducts'");
+    }
 }
