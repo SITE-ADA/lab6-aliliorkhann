@@ -41,18 +41,23 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponseDto addProduct(UUID categoryId, UUID productId) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
+            .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
 
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
+            .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
 
-        category.getProducts().add(product);
-        product.getCategories().add(category);
+    List<Product> updatedProducts = new java.util.ArrayList<>(category.getProducts());
+    updatedProducts.add(product);
+    category.setProducts(updatedProducts);
+
+    List<Category> updatedCategories = new java.util.ArrayList<>(product.getCategories());
+    updatedCategories.add(category);
+    product.setCategories(updatedCategories);
 
         categoryRepository.save(category);
         productRepository.save(product);
 
-        return new CategoryResponseDto(category.getId(), category.getName());
+    return new CategoryResponseDto(category.getId(), category.getName());
     }
 
     @Override

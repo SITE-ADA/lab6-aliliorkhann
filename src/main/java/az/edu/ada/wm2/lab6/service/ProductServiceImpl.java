@@ -31,6 +31,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDto createProduct(ProductRequestDto dto) {
+        
+        if (dto.getPrice() == null || dto.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+        throw new IllegalArgumentException("Price must be positive");
+    }
+
         Product product = productMapper.toEntity(dto);
         product.setId(UUID.randomUUID());
 
@@ -59,7 +64,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDto updateProduct(UUID id, ProductRequestDto dto) {
-        Product existingProduct = productRepository.findById(id)
+        if (dto.getPrice() != null && dto.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+    throw new IllegalArgumentException("Price must be positive");
+}
+             Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
 
         existingProduct.setProductName(dto.getProductName());
@@ -73,29 +81,33 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.toResponseDto(updatedProduct);
     }
 
-    @Override
-    public void deleteProduct(UUID id) {
-        if (!productRepository.existsById(id)) {
-            throw new RuntimeException("Product not found with id: " + id);
-        }
-        productRepository.deleteById(id);
-    }
 
-    @Override
-    public List<ProductResponseDto> getProductsExpiringBefore(LocalDate date) {
-        return productRepository.findAll().stream()
-                .filter(product -> product.getExpirationDate() != null
-                        && product.getExpirationDate().isBefore(date))
-                .map(productMapper::toResponseDto)
-                .toList();
-    }
+    
+
+        @Override
+    public void deleteProduct(UUID id) {
+
+        Product product = productRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Product not found"));
+
+    productRepository.delete(product);  
+}
+
+@Override
+public List<ProductResponseDto> getProductsExpiringBefore(LocalDate date) {
+    return productRepository.findByExpirationDateBefore(date)
+            .stream()
+            .map(productMapper::toResponseDto)
+            .toList();
+}
+
 
     @Override
     public List<ProductResponseDto> getProductsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
-        return productRepository.findAll().stream()
-                .filter(product -> product.getPrice().compareTo(minPrice) >= 0
-                        && product.getPrice().compareTo(maxPrice) <= 0)
-                .map(productMapper::toResponseDto)
-                .toList();
-    }
+        return productRepository.findByPriceBetween(minPrice, maxPrice)
+            .stream()
+            .map(productMapper::toResponseDto)
+            .toList();
 }
+}
+

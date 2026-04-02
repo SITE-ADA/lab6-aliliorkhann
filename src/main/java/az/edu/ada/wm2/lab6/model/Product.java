@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
 @Data
 @Entity
 @Builder
@@ -41,4 +42,4 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private List<Category> categories = new ArrayList<>();
-}
+} 
