@@ -10,7 +10,6 @@ import az.edu.ada.wm2.lab6.repository.CategoryRepository;
 import az.edu.ada.wm2.lab6.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.UUID;
 
