@@ -1,42 +1,58 @@
 package az.edu.ada.wm2.lab6.controller;
 
-import az.edu.ada.wm2.lab6.dto.CategoryRequestDto;
-import az.edu.ada.wm2.lab6.dto.CategoryResponseDto;
-import az.edu.ada.wm2.lab6.dto.ProductResponseDto;
+import az.edu.ada.wm2.lab6.model.dto.CategoryRequestDto;
+import az.edu.ada.wm2.lab6.model.dto.CategoryResponseDto;
+import az.edu.ada.wm2.lab6.model.dto.ProductResponseDto;
 import az.edu.ada.wm2.lab6.service.CategoryService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/api/categories")
+@RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
 
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
-
     @PostMapping
-    public CategoryResponseDto create(@RequestBody CategoryRequestDto dto) {
-        return categoryService.create(dto);
+    public ResponseEntity<CategoryResponseDto> createCategory(@RequestBody CategoryRequestDto requestDto) {
+        CategoryResponseDto response = categoryService.create(requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
-    public List<CategoryResponseDto> getAll() {
-        return categoryService.getAll();
+    public ResponseEntity<List<CategoryResponseDto>> fetchAll() {
+        List<CategoryResponseDto> categories = categoryService.getAll();
+        return ResponseEntity.ok(categories);
     }
 
     @PostMapping("/{categoryId}/products/{productId}")
-    public CategoryResponseDto addProduct(@PathVariable UUID categoryId,
-                                          @PathVariable UUID productId) {
-        return categoryService.addProduct(categoryId, productId);
+    public ResponseEntity<CategoryResponseDto> linkProduct(
+            @PathVariable("categoryId") UUID categoryId,
+            @PathVariable("productId") UUID productId) {
+
+        try {
+            CategoryResponseDto result = categoryService.addProduct(categoryId, productId);
+            return ResponseEntity.ok(result);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @GetMapping("/{categoryId}/products")
-    public List<ProductResponseDto> getProducts(@PathVariable UUID categoryId) {
-        return categoryService.getProducts(categoryId);
+    public ResponseEntity<List<ProductResponseDto>> fetchProductsByCategory(
+            @PathVariable("categoryId") UUID categoryId) {
+
+        try {
+            List<ProductResponseDto> products = categoryService.getProducts(categoryId);
+            return ResponseEntity.ok(products);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }
